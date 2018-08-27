@@ -127,6 +127,13 @@ void xy2lr(int16_t x, int16_t y, int16_t *l, int16_t *r) {
 	*r = right;
 }
 
+void ch2pwm(int16_t ch, int16_t *pwm) {
+    int16_t p = ch-CENTER;
+    if (p>PWM_LIMIT) p = PWM_LIMIT;
+    if (p<-PWM_LIMIT) p = -PWM_LIMIT;
+    *pwm = p;
+}
+
 int main(void)
 {
     //WDTCTL = WDTPW + WDTHOLD;        // Stop WDT
@@ -177,18 +184,23 @@ int main(void)
         __bis_SR_register(LPM0_bits + GIE); // Enter LPM0, interrupts enabled
 		
 		if (loc_rxcnt != rxcnt) { // new channel data arrived
-			int16_t left, right;
+			//int16_t left, right;
 			bool led = false;
 
-			xy2lr(ch[0], ch[1], &left, &right);
+			/*xy2lr(ch[0], ch[1], &left, &right);
 
 			if (set_pwm_1(left) || set_pwm_2(right))
-				led = true;
+				led = true;*/
+            
+            int16_t pwm;
+            ch2pwm(ch[1], &pwm);
+            if (set_pwm_1(pwm) || set_pwm_2(pwm))
+                led = true;
 
 			if (led) LED_GREEN_ON();
 			else LED_GREEN_OFF();
 			
-			TA0CCR1 = ch[2];
+			TA0CCR1 = ch[0];
 			
 			loc_rxcnt = rxcnt;
 		}
