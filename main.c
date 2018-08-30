@@ -58,7 +58,7 @@
 
 #define PWM_THOLD 50
 #define PWM_MAX 500
-#define PWM_LIMIT 500
+#define PWM_LIMIT 250
 
 uint16_t ch[CHANNELS];
 int rxcnt = 0;
