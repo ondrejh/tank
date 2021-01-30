@@ -197,6 +197,11 @@ int main(void)
             if (set_pwm_1(pwm) || set_pwm_2(pwm))
                 led = true;
 
+            /*if (set_pwm_1(-left))
+                led = true;
+            if (set_pwm_2(right))
+				led = true;*/
+
 			if (led) LED_GREEN_ON();
 			else LED_GREEN_OFF();
 			
